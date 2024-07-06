@@ -26,6 +26,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -49,9 +53,13 @@ public class SecurityConfig {
                     //  Public endpoint
                     http.requestMatchers(HttpMethod.POST, "/auth/**").permitAll();
                     //  Private endpoint
-                    http.requestMatchers(HttpMethod.POST, "/method/post").hasAnyRole("ADMIN", "DEV");
-                    http.requestMatchers(HttpMethod.PATCH, "/method/patch").hasAnyAuthority("REFACTOR");
-                    http.requestMatchers(HttpMethod.GET, "/method/get").hasAnyRole("ADMIN", "DEV");
+                    // ADMIN
+                    http.requestMatchers(HttpMethod.GET, "/method/get").hasAnyRole("ADMIN","USER","INVITED");
+                    http.requestMatchers(HttpMethod.POST, "/method/post").hasAnyRole("ADMIN","USER");
+                    http.requestMatchers(HttpMethod.PUT, "/method/put").hasAnyRole("ADMIN");
+                    http.requestMatchers(HttpMethod.DELETE, "/method/delete").hasAnyRole("ADMIN");
+
+
 
                     //  Public unspecified
                     http.anyRequest().denyAll();
@@ -59,6 +67,20 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();
     }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
+
 
     // Step management
     @Bean

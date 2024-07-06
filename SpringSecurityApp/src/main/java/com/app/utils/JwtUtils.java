@@ -40,7 +40,7 @@ public class JwtUtils {
                 .withSubject(username)
                 .withClaim("authorities", authorities)
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1800000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 40000)) //1800000 30min
                 .withJWTId(UUID.randomUUID().toString())
                 .withNotBefore(new Date(System.currentTimeMillis()))
                 .sign(algorithm);

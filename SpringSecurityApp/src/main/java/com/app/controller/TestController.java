@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/method")
 public class TestController {
 
+
     @GetMapping("/get")
     public String callGet(){
         return "Method Called With GET";

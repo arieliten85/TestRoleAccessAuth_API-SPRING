@@ -39,9 +39,7 @@ public class SpringSecurityAppApplication {
 					.name("DELETE")
 					.build();
 
-			PermissionEntity refactorPermission = PermissionEntity.builder()
-					.name("REFACTOR")
-					.build();
+
 
 			/* Create ROLES */
 			RoleEntity roleAdmin = RoleEntity.builder()
@@ -59,10 +57,6 @@ public class SpringSecurityAppApplication {
 					.permissionList(Set.of(readPermission))
 					.build();
 
-			RoleEntity roleDeveloper = RoleEntity.builder()
-					.roleEnum(RoleEnum.DEV)
-					.permissionList(Set.of(createPermission, readPermission, updatePermission, deletePermission, refactorPermission))
-					.build();
 
 			/* CREATE USERS */
 			UserEntity userSantiago = UserEntity.builder()
@@ -75,8 +69,8 @@ public class SpringSecurityAppApplication {
 					.roles(Set.of(roleAdmin))
 					.build();
 
-			UserEntity userDaniel = UserEntity.builder()
-					.username("daniel")
+			UserEntity userAnyi = UserEntity.builder()
+					.username("anyi")
 					.password("$2a$10$cMY29RPYoIHMJSuwRfoD3eQxU1J5Rww4VnNOUOAEPqCBshkNfrEf6")
 					.isEnabled(true)
 					.accountNoExpired(true)
@@ -85,8 +79,8 @@ public class SpringSecurityAppApplication {
 					.roles(Set.of(roleUser))
 					.build();
 
-			UserEntity userAndrea = UserEntity.builder()
-					.username("andrea")
+			UserEntity userDaniel = UserEntity.builder()
+					.username("daniel")
 					.password("$2a$10$cMY29RPYoIHMJSuwRfoD3eQxU1J5Rww4VnNOUOAEPqCBshkNfrEf6")
 					.isEnabled(true)
 					.accountNoExpired(true)
@@ -95,17 +89,10 @@ public class SpringSecurityAppApplication {
 					.roles(Set.of(roleInvited))
 					.build();
 
-			UserEntity userAnyi = UserEntity.builder()
-					.username("anyi")
-					.password("$2a$10$cMY29RPYoIHMJSuwRfoD3eQxU1J5Rww4VnNOUOAEPqCBshkNfrEf6")
-					.isEnabled(true)
-					.accountNoExpired(true)
-					.accountNoLocked(true)
-					.credentialNoExpired(true)
-					.roles(Set.of(roleDeveloper))
-					.build();
 
-			userRepository.saveAll(List.of(userSantiago, userDaniel, userAndrea, userAnyi));
+
+
+			userRepository.saveAll(List.of(userSantiago, userDaniel, userAnyi));
 		};
 	}
 }

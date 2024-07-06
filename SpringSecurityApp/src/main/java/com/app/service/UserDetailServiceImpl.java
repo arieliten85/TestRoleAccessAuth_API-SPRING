@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -68,18 +69,18 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 userEntity.isAccountNoExpired(),
                 userEntity.isCredentialNoExpired(),
                 userEntity.isAccountNoLocked(),
+
                 authorityList);
 
     }
 
     public AuthResponse loginUser(AuthLoginRequest authLoginRequest) {
-
-
         String username = authLoginRequest.username();
         String password = authLoginRequest.password();
         try {
             Authentication authentication = this.authenticate(username, password);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
             String accessToken = jwtUtils.createToken(authentication);
             return new AuthResponse(username, "User longed successfully", accessToken, true);
         } catch (BadCredentialsException | UsernameNotFoundException e) {
@@ -117,7 +118,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     public Authentication authenticate(String username, String password) {
         UserDetails userDetails = this.loadUserByUsername(username);
-
         if (userDetails == null) {
             throw new BadCredentialsException("Invalid username or password");
         }
@@ -125,6 +125,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Incorrect Password");
         }
+
 
         return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
     }
