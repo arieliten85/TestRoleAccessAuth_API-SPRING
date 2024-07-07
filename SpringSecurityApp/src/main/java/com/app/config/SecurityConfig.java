@@ -76,7 +76,6 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 "https://test-role-access-authority.vercel.app",
                 "http://localhost:3000"
-
         ));
 
         configuration.addAllowedMethod("*");
