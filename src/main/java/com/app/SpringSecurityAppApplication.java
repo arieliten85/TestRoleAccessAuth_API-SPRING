@@ -5,6 +5,7 @@ import com.app.persistence.entity.PermissionEntity;
 import com.app.persistence.entity.RoleEntity;
 import com.app.persistence.entity.UserEntity;
 import com.app.persistence.repository.UserRepository;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +20,10 @@ public class SpringSecurityAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringSecurityAppApplication.class, args);
 	}
+
+
+	// Puedes imprimir las variables de entorno para verificar que se cargaron correctamente
+
 	@Bean
 	CommandLineRunner init(UserRepository userRepository) {
 		return args -> {

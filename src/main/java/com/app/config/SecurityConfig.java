@@ -71,13 +71,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000");
-
         configuration.setAllowedOrigins(Arrays.asList(
                 "https://test-role-access-authority.vercel.app",
                 "http://localhost:3000"
         ));
-
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
